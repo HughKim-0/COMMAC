@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "602650353463",
+    "project_id": "command-accepted-2997c",
+    "storage_bucket": "command-accepted-2997c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:602650353463:android:a3a783c2088a6b8c4b04b2",
+        "android_client_info": {
+          "package_name": "com.example.command_accepted"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5WflQSqO1EhbaLjVuRIEk3QgDbLEOOO8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
