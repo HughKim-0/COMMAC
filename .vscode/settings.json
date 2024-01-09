@@ -1,0 +1,6 @@
+{
+    "git.ignoreLimitWarning": true,
+    "java.compile.nullAnalysis.mode": "automatic",
+    "cmake.sourceDirectory": "C:/Users/wooni/OneDrive/Desktop/Work/command_accepted/linux",
+    "dotnet.defaultSolution": "build/windows/plugins/firebase_core/firebase_core.sln"
+}
