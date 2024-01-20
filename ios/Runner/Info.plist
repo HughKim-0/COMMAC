@@ -51,5 +51,9 @@
 	<string>Camera Usage</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Micro Phone Usage</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Calander Open</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Calander Open</string>
 </dict>
 </plist>
