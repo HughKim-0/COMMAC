@@ -8,6 +8,7 @@ import 'package:command_accepted/Utils/colors_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:uuid/uuid.dart';
 
 class AddMemberForm extends StatefulWidget {
@@ -131,15 +132,40 @@ class _AddMemberFormState extends State<AddMemberForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          TextFormField(
-            controller: _searchController,
-            style: Theme.of(context).textTheme.displaySmall,
-            decoration: const InputDecoration(labelText: 'User email'),
-            onFieldSubmitted: (String _) {
-              setState(() {
-                _isShowUsers = true;
-              });
-            },
+          Row(
+            children: [
+              Expanded(
+                flex: 6,
+                child: TextFormField(
+                  controller: _searchController,
+                  style: Theme.of(context).textTheme.displaySmall,
+                  decoration: const InputDecoration(labelText: 'User email'),
+                  onFieldSubmitted: (String _) {
+                    setState(() {
+                      _isShowUsers = true;
+                    });
+                  },
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: blueColor,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _isShowUsers = true;
+                    });
+                  },
+                  child: FaIcon(
+                    FontAwesomeIcons.check,
+                    size: 30,
+                    color: whiteColor,
+                  ),
+                ),
+              ),
+            ],
           ),
           _isShowUsers
               ? FutureBuilder(
@@ -157,30 +183,24 @@ class _AddMemberFormState extends State<AddMemberForm> {
                       shrinkWrap: true,
                       itemCount: (snapshot.data! as dynamic).docs.length,
                       itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    (snapshot.data! as dynamic).docs[index]
-                                        ['userName'],
-                                    style: searchSmallFont,
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Text(
-                                    (snapshot.data! as dynamic).docs[index]
-                                        ['emailAddress'],
-                                    style: searchSmallFont,
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Center(
-                                child: Row(
+                        return (snapshot.data != null)
+                            ? ListTile(
+                                title: Column(
                                   children: [
+                                    Text(
+                                      (snapshot.data! as dynamic).docs[index]
+                                          ['userName'],
+                                      style: searchSmallFont,
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Text(
+                                      (snapshot.data! as dynamic).docs[index]
+                                          ['emailAddress'],
+                                      style: searchSmallFont,
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
                                     ElevatedButton(
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: blueColor,
@@ -202,10 +222,8 @@ class _AddMemberFormState extends State<AddMemberForm> {
                                     ),
                                   ],
                                 ),
-                              ),
-                            ],
-                          ),
-                        );
+                              )
+                            : Text('Couldn\'t find the user.');
                       },
                     );
                   },

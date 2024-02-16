@@ -123,6 +123,7 @@ class GeneralMethod {
     final String currentUserId = _auth.currentUser!.uid;
     final String currentUserEmail = _auth.currentUser!.email.toString();
     final String timeStamp = datetimeToString(DateTime.now());
+    final DateTime timeStampDummy = DateTime.now();
     String result = 'error';
     List<String> ids = [currentUserId, receiverId];
     ids.sort();
@@ -142,7 +143,8 @@ class GeneralMethod {
           startTimeString: startTimeString,
           endTimeString: endTimeString,
           commandId: commandId,
-          commandRoomId: commandRoomId);
+          commandRoomId: commandRoomId,
+          timeDummy: timeStampDummy);
 
       await _db
           .collection('commandRooms')
@@ -176,7 +178,7 @@ class GeneralMethod {
         .collection('commandRooms')
         .doc(commandRoomId)
         .collection('commands')
-        .orderBy('timeStamp', descending: true)
+        .orderBy('timeDummy', descending: true)
         .snapshots();
   }
 

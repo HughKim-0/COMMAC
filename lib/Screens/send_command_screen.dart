@@ -39,7 +39,8 @@ class _SendCommandScreenState extends State<SendCommandScreen> {
   final String _status = 'Pending';
   int startTimeInt = 0;
   int endTimeInt = 0;
-  final _formKey = GlobalKey<FormFieldState>();
+  final GlobalKey<FormFieldState> _formKey = GlobalKey<FormFieldState>();
+  late PageController pageController;
 
   UserProfile? _user;
   final notificationMethod = NotificationsService();
@@ -128,6 +129,7 @@ class _SendCommandScreenState extends State<SendCommandScreen> {
           .then((value) {
         if (value == 'Success') {
           Fluttertoast.showToast(msg: 'Command has been successfully sent');
+          reset();
         } else {
           Fluttertoast.showToast(msg: value);
         }
@@ -174,11 +176,29 @@ class _SendCommandScreenState extends State<SendCommandScreen> {
     });
   }
 
+  void resetTwo() {
+    pageController.jumpToPage(1);
+  }
+
   void reset() {
     _titleController.clear();
     _locationController.clear();
     _noteController.clear();
-    _formKey.currentState?.reset();
+    _bridgeMembers.clear();
+    setState(
+      () {
+        _bridgeMembers.add(
+          BridgeCommandedMember(
+            memberId: null,
+            memberName: null,
+            memberEmail: null,
+            memberPhone: null,
+          ),
+        );
+      },
+    );
+    _formKey.currentState?.setState(() {});
+    ;
   }
 
   @override
@@ -242,6 +262,46 @@ class _SendCommandScreenState extends State<SendCommandScreen> {
             ListView.builder(
               shrinkWrap: true,
               itemCount: _bridgeMembers.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Row(
+                  children: [
+                    Expanded(
+                      flex: 8,
+                      child: ListTile(
+                        title: Text(
+                            _bridgeMembers[index].memberName.toString() ==
+                                    "null"
+                                ? "Choose a member below"
+                                : _bridgeMembers[index].memberName.toString()),
+                      ),
+                    ),
+                    if (index > 0)
+                      const Expanded(
+                        child: SizedBox(
+                          width: 20,
+                        ),
+                      ),
+                    if (index > 0)
+                      Expanded(
+                        child: InkWell(
+                          child: const Icon(
+                            Icons.backspace,
+                            color: Colors.red,
+                          ),
+                          onTap: () {
+                            setState(() {
+                              _bridgeMembers.removeAt(index);
+                            });
+                          },
+                        ),
+                      ),
+                  ],
+                );
+              },
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: _bridgeMembers.length,
               itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
@@ -249,7 +309,7 @@ class _SendCommandScreenState extends State<SendCommandScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Expanded(
-                        flex: 1,
+                        flex: 3,
                         child: DropdownButtonFormField<String>(
                           key: _formKey,
                           icon: const Icon(
@@ -291,47 +351,45 @@ class _SendCommandScreenState extends State<SendCommandScreen> {
                           }).toList(),
                         ),
                       ),
-                      if (index > 0)
-                        const SizedBox(
-                          width: 20,
-                        ),
-                      if (index > 0)
-                        InkWell(
-                          child: const Icon(
-                            Icons.backspace,
-                            color: Colors.red,
-                          ),
-                          onTap: () {
-                            setState(() {
-                              _bridgeMembers.removeAt(index);
-                            });
-                          },
-                        ),
                     ],
                   ),
                 );
               },
             ),
-            IconButton(
-                onPressed: () {
-                  setState(
-                    () {
-                      _bridgeMembers.add(
-                        BridgeCommandedMember(
-                          memberId: null,
-                          memberName: null,
-                          memberEmail: null,
-                          memberPhone: null,
+            _bridgeMembers[0].memberId != null
+                ? _bridgeMembers[_bridgeMembers.length - 1].memberId != null
+                    ? ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                            greenColor,
+                          ),
+                          elevation: MaterialStateProperty.all<double>(
+                            5.0,
+                          ),
                         ),
-                      );
-                    },
-                  );
-                },
-                icon: Icon(
-                  Icons.add_circle,
-                  color: Color.fromRGBO(37, 199, 61, 0.612),
-                  size: 30.0,
-                )),
+                        onPressed: () {
+                          setState(
+                            () {
+                              _bridgeMembers.add(
+                                BridgeCommandedMember(
+                                  memberId: null,
+                                  memberName: null,
+                                  memberEmail: null,
+                                  memberPhone: null,
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        child: Text('Add',
+                            style: Theme.of(context).textTheme.displaySmall),
+                      )
+                    : SizedBox(
+                        height: 5,
+                      )
+                : SizedBox(
+                    height: 5,
+                  ),
             const SizedBox(
               height: 20,
             ),
@@ -376,9 +434,14 @@ class _SendCommandScreenState extends State<SendCommandScreen> {
                     },
                     child: Text(
                         '${startDateTime.year}/${startDateTime.month}/${startDateTime.day}',
-                        style: Theme.of(context).textTheme.displaySmall),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: secondaryColor,
+                        style: dateFont),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                        lightPrimaryColor,
+                      ),
+                      elevation: MaterialStateProperty.all<double>(
+                        5.0,
+                      ),
                     ),
                   ),
                 ),
@@ -388,8 +451,13 @@ class _SendCommandScreenState extends State<SendCommandScreen> {
                 Expanded(
                   flex: 1,
                   child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: secondaryColor,
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                        lightPrimaryColor,
+                      ),
+                      elevation: MaterialStateProperty.all<double>(
+                        5.0,
+                      ),
                     ),
                     onPressed: () async {
                       final time = await pickStartTime();
@@ -423,8 +491,13 @@ class _SendCommandScreenState extends State<SendCommandScreen> {
                 Expanded(
                   flex: 1,
                   child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: secondaryColor,
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                        lightPrimaryColor,
+                      ),
+                      elevation: MaterialStateProperty.all<double>(
+                        5.0,
+                      ),
                     ),
                     onPressed: () async {
                       final date = await pickEndDate();
@@ -434,7 +507,7 @@ class _SendCommandScreenState extends State<SendCommandScreen> {
                     },
                     child: Text(
                         '${endDateTime.year}/${endDateTime.month}/${endDateTime.day}',
-                        style: Theme.of(context).textTheme.displaySmall),
+                        style: dateFont),
                   ),
                 ),
                 const SizedBox(
@@ -443,8 +516,13 @@ class _SendCommandScreenState extends State<SendCommandScreen> {
                 Expanded(
                   flex: 1,
                   child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: secondaryColor,
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                        lightPrimaryColor,
+                      ),
+                      elevation: MaterialStateProperty.all<double>(
+                        5.0,
+                      ),
                     ),
                     onPressed: () async {
                       final endTime = await pickEndTime();
@@ -511,8 +589,6 @@ class _SendCommandScreenState extends State<SendCommandScreen> {
                         member.memberName, member.memberId, member.memberEmail);
                   }
                 }
-
-                reset();
               },
               child: Text('Send',
                   style: Theme.of(context).textTheme.headlineSmall),
@@ -527,10 +603,20 @@ class _SendCommandScreenState extends State<SendCommandScreen> {
   }
 
   Future<DateTime?> pickStartDate() => showDatePicker(
-      context: context,
-      initialDate: startDateTime,
-      firstDate: DateTime(1900),
-      lastDate: DateTime(2200));
+        context: context,
+        initialDate: startDateTime,
+        firstDate: DateTime(1900),
+        lastDate: DateTime(2200),
+        builder: (context, child) {
+          return Theme(
+              data: Theme.of(context).copyWith(
+                textTheme: TextTheme(
+                  overline: TextStyle(fontSize: 10),
+                ),
+              ),
+              child: child!);
+        },
+      );
 
   Future<TimeOfDay?> pickStartTime() => showTimePicker(
         context: context,
@@ -539,10 +625,20 @@ class _SendCommandScreenState extends State<SendCommandScreen> {
       );
 
   Future<DateTime?> pickEndDate() => showDatePicker(
-      context: context,
-      initialDate: endDateTime,
-      firstDate: DateTime(1900),
-      lastDate: DateTime(2200));
+        context: context,
+        initialDate: endDateTime,
+        firstDate: DateTime(1900),
+        lastDate: DateTime(2200),
+        builder: (context, child) {
+          return Theme(
+              data: Theme.of(context).copyWith(
+                textTheme: TextTheme(
+                  overline: TextStyle(fontSize: 10),
+                ),
+              ),
+              child: child!);
+        },
+      );
 
   Future<TimeOfDay?> pickEndTime() => showTimePicker(
         context: context,

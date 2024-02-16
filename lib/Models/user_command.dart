@@ -61,6 +61,7 @@ class Command {
   final String endTimeString;
   final String commandId;
   final String commandRoomId;
+  final DateTime timeDummy;
 
   const Command({
     required this.senderId,
@@ -77,6 +78,7 @@ class Command {
     required this.endTimeString,
     required this.commandId,
     required this.commandRoomId,
+    required this.timeDummy,
   });
 
   Map<String, dynamic> toJson() => {
@@ -94,6 +96,7 @@ class Command {
         'endTimeString': endTimeString,
         'commandId': commandId,
         'commandRoomId': commandRoomId,
+        'timeDummy': timeDummy,
       };
 
   static Command fromSnapShot(DocumentSnapshot snapshot) {
@@ -114,6 +117,7 @@ class Command {
       endTimeString: snap['endTimeString'],
       commandId: snap['commandId'],
       commandRoomId: snap['commandRoomId'],
+      timeDummy: snap['timeDummy'],
     );
   }
 
@@ -133,6 +137,7 @@ class Command {
       endTimeString: json['endTimeString'],
       commandId: json['commandId'],
       commandRoomId: json['commandRoomId'],
+      timeDummy: json['timeDummy'],
     );
   }
 }

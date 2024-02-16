@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 const mobileBackgroundColor = Color.fromRGBO(0, 0, 0, 1);
 const mobileBottomMenuBarColor = Color.fromRGBO(20, 58, 38, 0.612);
@@ -7,6 +8,7 @@ const mobileSearchColor = Color.fromRGBO(38, 38, 38, 1);
 
 const highlightColor = Color.fromRGBO(248, 244, 213, 0.914);
 const primaryColor = Color.fromRGBO(94, 133, 165, 1);
+const lightPrimaryColor = Color.fromRGBO(131, 168, 199, 1);
 const secondaryColor = Color.fromRGBO(11, 67, 131, 0.612);
 const thirdColor = Color.fromRGBO(48, 69, 95, 0.612);
 const whiteColor = Colors.white;
@@ -48,4 +50,20 @@ const deleteSmallFont = TextStyle(
 const searchSmallFont = TextStyle(
   color: myBubbleColor,
   fontSize: 20,
+);
+
+const dateFont = TextStyle(
+  color: blackColor,
+  fontSize: 19,
+);
+
+final sendCommandTitle = TextStyle(
+  color: blackColor,
+  fontFamily: GoogleFonts.paytoneOne().fontFamily,
+  fontSize: 30,
+);
+
+const dateTimeCommandTitle = TextStyle(
+  color: blackColor,
+  fontSize: 25,
 );

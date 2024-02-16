@@ -66,10 +66,9 @@ class _CommandRoomScreenState extends State<CommandRoomScreen> {
         }
 
         return ListView(
-          children: snapshot.data!.docs
-              .map((document) => _buildCommandItem(document))
-              .toList(),
-        );
+            children: snapshot.data!.docs
+                .map((document) => _buildCommandItem(document))
+                .toList());
       },
     );
   }

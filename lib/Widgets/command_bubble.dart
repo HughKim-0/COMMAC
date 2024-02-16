@@ -149,7 +149,7 @@ class _CommandBubbleState extends State<CommandBubble> {
                 style: Theme.of(context).textTheme.bodyLarge,
                 children: <TextSpan>[
                   TextSpan(
-                    text: '${widget.toDo}',
+                    text: '${widget.note}',
                     style: Theme.of(context).textTheme.headlineSmall,
                   )
                 ]),
